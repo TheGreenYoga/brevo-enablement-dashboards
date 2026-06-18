@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Enablement Impact — FR Cohort · Mar–May 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f1;color:#1a2e1e;min-height:100vh}
+.hero{background:linear-gradient(135deg,#0b4332 0%,#166044 60%,#1a7a53 100%);color:#fff;padding:48px 48px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:rgba(132,204,153,.12);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-60px;left:40%;width:200px;height:200px;background:rgba(132,204,153,.08);border-radius:50%}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;position:relative;z-index:1}
+.hero h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.hero .sub{color:#84cc99;margin-top:6px;font-size:0.9rem;font-weight:500}
+.hero-badge{background:rgba(132,204,153,.2);border:1px solid rgba(132,204,153,.4);color:#84cc99;padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:600;white-space:nowrap}
+.verdict{background:rgba(0,0,0,.25);border-left:4px solid #84cc99;border-radius:6px;padding:20px 24px;position:relative;z-index:1}
+.verdict-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#84cc99;margin-bottom:10px}
+.verdict p{font-size:1.05rem;line-height:1.6;color:#e8f5eb}
+.verdict strong{color:#fff}
+.wrap{max-width:1200px;margin:0 auto;padding:36px 40px}
+.section-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#166044;margin:36px 0 16px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:#c8ddc9}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.kpi{background:#fff;border-radius:10px;padding:18px 16px 14px;box-shadow:0 1px 3px rgba(0,50,20,.07);border-top:3px solid #84cc99}
+.kpi .k-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;margin-bottom:10px}
+.kpi .k-main{font-size:1.7rem;font-weight:800;color:#0b4332;line-height:1}
+.kpi .k-sub{font-size:0.78rem;color:#9ca3af;margin-top:4px}
+.kpi .k-breakdown{font-size:0.75rem;color:#6b7280;margin-top:5px;line-height:1.5}
+.kpi .k-delta{margin-top:8px}
+.kpi.highlight{border-top-color:#16a34a;background:#f0fdf4}
+.kpi.accent{border-top-color:#0b4332}
+.split-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,50,20,.07)}
+.split-table th{background:#0b4332;color:#fff;padding:11px 16px;text-align:left;font-size:0.78rem;font-weight:700;letter-spacing:.03em}
+.split-table td{padding:10px 16px;border-bottom:1px solid #f0f7f1;font-size:0.85rem}
+.split-table tr:last-child td{border-bottom:none}
+.split-table tr:hover td{background:#f7fdf8}
+.split-table .sub-row td{background:#fafff9;color:#6b7280;font-size:0.82rem;padding:7px 16px 7px 28px}
+.split-table .sub-row td:first-child::before{content:'↳ ';color:#9ca3af}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:700}
+.tag.good{background:#dcfce7;color:#166044}
+.tag.neutral{background:#f3f4f6;color:#374151}
+.tag.warn{background:#fef9c3;color:#92400e}
+.charts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:4px}
+.chart-card{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 3px rgba(0,50,20,.07)}
+.chart-card h3{font-size:0.82rem;font-weight:700;color:#374151;margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
+.lr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:4px}
+.lr-card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 1px 3px rgba(0,50,20,.07)}
+.lr-card .lr-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;color:#6b7280}
+.lr-card .lr-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:0.85rem}
+.lr-card .lr-row:last-child{border-bottom:none}
+.lr-card .lr-row .lbl{color:#6b7280}
+.lr-card .lr-row .v{font-weight:700;color:#0b4332}
+.lr-card.live-card{border-top:3px solid #0b4332}
+.lr-card.replay-card{border-top:3px solid #84cc99}
+.lr-card.control-card{border-top:3px solid #d1d5db}
+.findings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:4px}
+.finding{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 3px rgba(0,50,20,.07);border-left:4px solid #84cc99}
+.finding.amber{border-left-color:#f59e0b}
+.finding.blue{border-left-color:#3b82f6}
+.finding.green{border-left-color:#16a34a}
+.meth{background:#fff;border-radius:10px;padding:24px;box-shadow:0 1px 3px rgba(0,50,20,.07);margin-top:4px}
+.meth-warn{background:#fffbeb;border-left:4px solid #f59e0b;padding:14px 18px;border-radius:4px;margin-bottom:14px;font-size:0.84rem;color:#92400e}
+.meth ul{padding-left:18px}
+.meth li{font-size:0.84rem;color:#4b5563;margin:5px 0;line-height:1.5}
+.note-box{background:#fafff9;border:1px solid #bbf7d0;border-radius:8px;padding:14px 18px;margin:16px 0;font-size:0.82rem;color:#166044;line-height:1.6}
+footer{text-align:center;padding:32px;color:#9ca3af;font-size:0.78rem}
+footer a{color:#166044;text-decoration:none;font-weight:600}
+@media(max-width:900px){.kpi-grid,.charts-grid,.lr-grid,.findings-grid{grid-template-columns:1fr 1fr}.hero,.wrap{padding:24px 20px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <h1>Enablement Sessions Impact</h1>
+      <div class="sub">FR Cohort &nbsp;·&nbsp; 30 Minutes pour mieux maîtriser Brevo &nbsp;·&nbsp; Mar–May 2026</div>
+    </div>
+    <div class="hero-badge">Generated 2026-06-17 · v2</div>
+  </div>
+  <div class="verdict">
+    <div class="verdict-title">📊 Verdict</div>
+    <p>FR participants had <strong>−12.7 pts lower CSM contact</strong> than the control (60.0% vs 72.7%) and opened tickets at <strong>+8.7 pts</strong> (36.0% vs 27.3%). Last CSM touch averaged <strong>69d</strong> ago vs 22d for the control. Both signals converge: participants are more self-sufficient and rely less on their CSM.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="note-box">
+    ℹ️ <strong>Participant scope:</strong> n=50 — includes 35 direct customers + 15 Enterprise sub-accounts (BU / divisions of existing customer groups). MRR is shown on the 35 direct customers only (sub-accounts carry MRR at the parent account level).
+  </div>
+
+  <div class="section-title">Key metrics — 50 participants vs 209 control</div>
+  <div class="kpi-grid">
+    <div class="kpi highlight">
+      <div class="k-label">CSM Contact (total) <span title="Any email, call, or note in 90-day window" style="cursor:help;color:#9ca3af;font-size:0.7rem">ⓘ</span></div>
+      <div class="k-main">60.0%</div>
+      <div class="k-sub">vs 72.7% control</div>
+      <div class="k-breakdown">Email: 54.0% &nbsp;|&nbsp; Call+Note: 10.0%</div>
+      <div class="k-delta"><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↓ -12.7pts</span></div>
+    </div>
+    <div class="kpi highlight">
+      <div class="k-label">Ticket Rate</div>
+      <div class="k-main">36.0%</div>
+      <div class="k-sub">vs 27.3% control</div>
+      <div class="k-delta"><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↑ +8.7pts</span></div>
+    </div>
+    <div class="kpi accent">
+      <div class="k-label">Days Since Last Touch</div>
+      <div class="k-main">69d</div>
+      <div class="k-sub">vs 22d control</div>
+      <div class="k-delta"><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↑ +46.9d</span></div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">Avg Health Score</div>
+      <div class="k-main">5.38</div>
+      <div class="k-sub">vs 6.41 control &nbsp;·&nbsp; T0: 5.30</div>
+      <div class="k-delta"><span style="background:#6b7280;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↓ -1.0</span></div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">Avg MRR <span title="On 35 direct customers only — sub-accounts excluded" style="cursor:help;color:#9ca3af;font-size:0.7rem">*</span></div>
+      <div class="k-main">€773</div>
+      <div class="k-sub">vs €689 control &nbsp;·&nbsp; n=35</div>
+      <div class="k-delta"><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↑ +84.0</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Full comparison table</div>
+  <table class="split-table">
+    <thead><tr><th>Metric</th><th>Participants (n=50)</th><th>Control (n=209)</th><th>Delta</th><th>Reading</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CSM contact rate (90d)</strong></td><td><strong>60.0%</strong></td><td>72.7%</td><td><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↓ -12.7pts</span></td><td><span class="tag neutral">Any email / call / note</span></td></tr>
+      <tr class="sub-row"><td>Email touch</td><td>54.0%</td><td>68.9%</td><td><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↓ -14.9pts</span></td><td><span class="tag warn">⚠ May include automated</span></td></tr>
+      <tr class="sub-row"><td>Call + note touch</td><td>10.0%</td><td>13.9%</td><td><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↓ -3.9pts</span></td><td><span class="tag neutral">Manual only — clean signal</span></td></tr>
+      <tr><td><strong>Ticket rate (90d)</strong></td><td><strong>36.0%</strong></td><td>27.3%</td><td><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↑ +8.7pts</span></td><td><span class="tag good">✅ Self-service signal</span></td></tr>
+      <tr><td>Avg days since last touch</td><td><strong>69d</strong></td><td>22d</td><td><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↑ +46.9d</span></td><td><span class="tag good">✅ Less frequent contact</span></td></tr>
+      <tr><td>Avg health score (now)</td><td>5.38</td><td>6.41</td><td><span style="background:#6b7280;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↓ -1.0</span></td><td><span class="tag warn">Selection bias</span></td></tr>
+      <tr><td>Avg health T0 (proxy)</td><td>5.30</td><td>4.77</td><td>—</td><td><span class="tag neutral">Pre-session baseline</span></td></tr>
+      <tr><td>Avg MRR *</td><td><strong>€773</strong> <small style="color:#9ca3af">(n=35)</small></td><td>€689</td><td><span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:12px;font-size:0.78rem;font-weight:700">↑ +84.0</span></td><td><span class="tag good">✅ Higher-value accounts</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">CSM contact breakdown — participants vs control</div>
+  <div class="charts-grid">
+    <div class="chart-card"><h3>CSM Contact — 3-way split</h3><canvas id="csmBreakChart"></canvas></div>
+    <div class="chart-card"><h3>Ticket Rate</h3><canvas id="ticketChart"></canvas></div>
+    <div class="chart-card"><h3>Avg Days Since Last Touch</h3><canvas id="daysChart"></canvas></div>
+    <div class="chart-card"><h3>Health Score</h3><canvas id="healthChart"></canvas></div>
+    <div class="chart-card"><h3>Client Risk — Participants</h3><canvas id="riskPChart"></canvas></div>
+    <div class="chart-card"><h3>Client Risk — Control</h3><canvas id="riskCChart"></canvas></div>
+  </div>
+
+  <div class="section-title">Live vs replay breakdown</div>
+  <div class="lr-grid">
+    <div class="lr-card live-card">
+      <div class="lr-title">🎥 Live attendees — n=42</div>
+      <div class="lr-row"><span class="lbl">CSM contact (total)</span><span class="v">57.1%</span></div>
+      <div class="lr-row"><span class="lbl">Email touch</span><span class="v">50.0%</span></div>
+      <div class="lr-row"><span class="lbl">Call + note</span><span class="v">11.9%</span></div>
+      <div class="lr-row"><span class="lbl">Ticket rate</span><span class="v">35.7%</span></div>
+      <div class="lr-row"><span class="lbl">Days since touch</span><span class="v">78d</span></div>
+      <div class="lr-row"><span class="lbl">Avg MRR</span><span class="v">€531</span></div>
+    </div>
+    <div class="lr-card replay-card">
+      <div class="lr-title">▶️ Replay watchers — n=9</div>
+      <div class="lr-row"><span class="lbl">CSM contact (total)</span><span class="v">77.8%</span></div>
+      <div class="lr-row"><span class="lbl">Email touch</span><span class="v">77.8%</span></div>
+      <div class="lr-row"><span class="lbl">Call + note</span><span class="v">0.0%</span></div>
+      <div class="lr-row"><span class="lbl">Ticket rate</span><span class="v">33.3%</span></div>
+      <div class="lr-row"><span class="lbl">Days since touch</span><span class="v">20d</span></div>
+      <div class="lr-row"><span class="lbl">Avg MRR</span><span class="v">€688</span></div>
+    </div>
+    <div class="lr-card control-card">
+      <div class="lr-title">⚪ Control group — n=209</div>
+      <div class="lr-row"><span class="lbl">CSM contact (total)</span><span class="v">72.7%</span></div>
+      <div class="lr-row"><span class="lbl">Email touch</span><span class="v">68.9%</span></div>
+      <div class="lr-row"><span class="lbl">Call + note</span><span class="v">13.9%</span></div>
+      <div class="lr-row"><span class="lbl">Ticket rate</span><span class="v">27.3%</span></div>
+      <div class="lr-row"><span class="lbl">Days since touch</span><span class="v">22d</span></div>
+      <div class="lr-row"><span class="lbl">Avg MRR</span><span class="v">€689</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Key findings</div>
+  <div class="findings-grid">
+    <div class="finding green">
+      <h4>📉 CSM contact −12.7 pts — autonomy signal</h4>
+      <p>60% of participants had any CSM contact vs 72.7% of the control group. The call+note signal (always manual) also dropped: 10% vs 13.9% — independent of automated email noise. Both measures point in the same direction.</p>
+    </div>
+    <div class="finding green">
+      <h4>🎫 Ticket rate +8.7 pts — self-service confirmed</h4>
+      <p>36% of participants opened a support ticket vs 27.3% of the control. This is the cleanest signal available — no ambiguity around automated sequences. Participants navigate the product independently and route themselves to support rather than their CSM.</p>
+    </div>
+    <div class="finding amber">
+      <h4>📅 +47d since last touch</h4>
+      <p>Participants were last contacted an average of 69d ago vs 22d for the control. The gap is partly amplified by the window end date (contacts after May 31 not counted), but direction is consistent with other signals.</p>
+    </div>
+    <div class="finding amber">
+      <h4>⚠️ Selection bias at T0 — worth noting</h4>
+      <p>Participants start with a lower health score (T0: 5.30 vs 4.77). Accounts with difficulties are more likely to be directed to enablement sessions. This bias works against participants on health comparisons — yet CSM and ticket signals remain favorable despite this baseline disadvantage.</p>
+    </div>
+  </div>
+
+  <div class="section-title">Methodology &amp; caveats</div>
+  <div class="meth">
+    <div class="meth-warn">⚠️ Directional signals only — not causal evidence.</div>
+    <ul>
+      <li>Participants: 42 live + 9 replay, Mar–May 2026. @brevo.com accounts excluded. n=50 = 35 direct customers + 15 Enterprise sub-accounts (BU / divisions of existing customer groups).</li>
+      <li>Control: 209 Pro FR Planhat customers (status=customer), excluding participant domains.</li>
+      <li>Contact window: Mar 1 – May 31 2026 (90 days), applied identically to both groups.</li>
+      <li>CSM contact proxy: binary (yes/no per company, not a count). Three measures: total, email only, call+note only.</li>
+      <li>⚠ <strong>CSM email touch includes automated sequences</strong> — indistinguishable from manual emails in Planhat. Call and note touches are always manual.</li>
+      <li>* MRR shown on the 35 direct customers only. The 15 sub-accounts carry MRR=0 in Planhat (revenue tracked at parent account level).</li>
+      <li>T0 health = h − hDiff (proxy — not the exact value at session date).</li>
+    </ul>
+  </div>
+
+</div>
+<footer>
+  Brevo Customer Enablement &nbsp;·&nbsp; 2026-06-17 &nbsp;·&nbsp; Data: Planhat + Livestorm &nbsp;·&nbsp;
+  <a href="https://www.notion.so/382449002dcb80fda248e442e45e68fd" target="_blank">Notion page ↗</a>
+</footer>
+
+<script>
+const G='#0b4332',MINT='#84cc99',GRAY='#d1d5db',AMB='#f59e0b',RED='#ef4444';
+const opts={responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}},scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}};
+const optsNoScale={responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}}};
+
+new Chart(document.getElementById('csmBreakChart'),{type:'bar',data:{
+  labels:['Total','Email only','Call+Note'],
+  datasets:[
+    {label:'Participants',data:[60.0,54.0,10.0],backgroundColor:G,borderRadius:4},
+    {label:'Control',data:[72.7,68.9,13.9],backgroundColor:MINT,borderRadius:4}
+  ]
+},options:opts});
+
+new Chart(document.getElementById('ticketChart'),{type:'bar',data:{
+  labels:['Participants','Control'],
+  datasets:[{data:[36.0,27.3],backgroundColor:[G,MINT],borderRadius:6}]
+},options:{...opts,plugins:{...opts.plugins,legend:{display:false}}}});
+
+new Chart(document.getElementById('daysChart'),{type:'bar',data:{
+  labels:['Live','Replay','Control'],
+  datasets:[{data:[78.1,20.1,21.9],backgroundColor:[G,MINT,GRAY],borderRadius:6}]
+},options:{...opts,plugins:{...opts.plugins,legend:{display:false}}}});
+
+new Chart(document.getElementById('healthChart'),{type:'bar',data:{
+  labels:['Now','T0 (proxy)'],
+  datasets:[
+    {label:'Participants',data:[5.38,5.3],backgroundColor:G,borderRadius:4},
+    {label:'Control',data:[6.41,4.77],backgroundColor:MINT,borderRadius:4}
+  ]
+},options:opts});
+
+const riskColors=[G,AMB,RED,'#6b7280'];
+const riskP={"Low (safe)": 29, "Medium": 5, "High (at risk)": 1};
+const riskC={"Low (safe)": 193, "Medium": 6, "High (at risk)": 5};
+new Chart(document.getElementById('riskPChart'),{type:'doughnut',data:{labels:Object.keys(riskP),datasets:[{data:Object.values(riskP),backgroundColor:riskColors.slice(0,Object.keys(riskP).length)}]},options:optsNoScale});
+new Chart(document.getElementById('riskCChart'),{type:'doughnut',data:{labels:Object.keys(riskC),datasets:[{data:Object.values(riskC),backgroundColor:riskColors.slice(0,Object.keys(riskC).length)}]},options:optsNoScale});
+</script>
+</body>
+</html>
