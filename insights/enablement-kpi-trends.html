@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enablement KPI Trends — June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; color: #1a1a1a; padding: 2rem 1.5rem; max-width: 820px; margin: 0 auto; }
+h1 { font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: #888780; margin-bottom: 2rem; }
+.section { margin-bottom: 2.5rem; }
+.section-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: #888780; text-transform: uppercase; margin-bottom: 14px; }
+.ins { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 1rem; font-size: 13px; line-height: 1.55; }
+.ins.g { background: #EAF3DE; color: #27500A; }
+.ins.a { background: #FAEEDA; color: #633806; }
+.ins.r { background: #FCEBEB; color: #791F1F; }
+.ins.p { background: #EEEDFE; color: #3C3489; }
+.ins svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+.metric-card { background: #f5f5f3; border-radius: 8px; padding: 12px 14px; }
+.metric-label { font-size: 11px; color: #888780; margin-bottom: 4px; }
+.metric-val { font-size: 22px; font-weight: 500; color: #1a1a1a; margin-bottom: 4px; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 5px; }
+.up { background: #EAF3DE; color: #27500A; }
+.down { background: #FCEBEB; color: #791F1F; }
+.flat { background: #F1EFE8; color: #444441; }
+.legend { display: flex; gap: 16px; margin-bottom: 10px; font-size: 12px; color: #888780; }
+.legend span { display: flex; align-items: center; gap: 5px; }
+.leg-sq { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.chart-wrap { position: relative; width: 100%; height: 220px; margin-bottom: 1rem; }
+.side-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.side-card { background: #f5f5f3; border-radius: 8px; padding: 14px 16px; }
+.side-lang { font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+.fr { color: #085041; } .en { color: #3C3489; }
+.side-inner { display: flex; gap: 20px; }
+.side-item p:first-child { font-size: 11px; color: #888780; margin-bottom: 2px; }
+.side-item p:last-child { font-size: 20px; font-weight: 500; color: #1a1a1a; }
+hr { border: none; border-top: 0.5px solid #e5e5e3; margin: 2rem 0; }
+.footer { font-size: 11px; color: #b4b2a9; margin-top: 2.5rem; padding-top: 1rem; border-top: 0.5px solid #e5e5e3; }
+</style>
+</head>
+<body>
+
+<h1>Enablement Program — KPI Trends</h1>
+<p class="subtitle">June 2026 · Brevo Customer Enablement · <a href="https://app.notion.com/p/sendinblue/388449002dcb8052af59c32dfb0e74d0" style="color:#1D9E75">Full data page on Notion →</a></p>
+
+<div class="section">
+  <p class="section-label">Enablement webinars — 2025 vs 2026</p>
+  <div class="ins g">
+    <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    Reach is growing fast (+30% registrations, +24% attendees) while engagement holds steady. The program is scaling without losing quality.
+  </div>
+  <div class="metric-grid">
+    <div class="metric-card"><p class="metric-label">Avg registrations</p><p class="metric-val">122</p><span class="badge up">+30% vs 2025</span></div>
+    <div class="metric-card"><p class="metric-label">Avg attendees</p><p class="metric-val">46.5</p><span class="badge up">+24.3% vs 2025</span></div>
+    <div class="metric-card"><p class="metric-label">Attendance rate</p><p class="metric-val">38.1%</p><span class="badge down">−4.3% vs 2025</span></div>
+    <div class="metric-card"><p class="metric-label">Watch time</p><p class="metric-val">80.7%</p><span class="badge flat">stable</span></div>
+    <div class="metric-card"><p class="metric-label">Interactions/att.</p><p class="metric-val">0.86</p><span class="badge up">+7.3% vs 2025</span></div>
+  </div>
+  <div class="ins a">
+    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    80.7% watch time is 30+ pts above B2B benchmark (50–60%). People who show up stay. The bottleneck is upstream: registration-to-attendance conversion, not the content.
+  </div>
+  <div class="legend">
+    <span><span class="leg-sq" style="background:#B4B2A9"></span>2025</span>
+    <span><span class="leg-sq" style="background:#1D9E75"></span>2026</span>
+  </div>
+  <div class="chart-wrap"><canvas id="c1" role="img" aria-label="Registrations and attendees per session 2025 vs 2026">2025: 93.9 reg, 37.4 att. 2026: 122 reg, 46.5 att.</canvas></div>
+  <div class="ins r">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    EN gets 20–30% fewer registrants than FR for the same topics. Bringing EN up to FR level = +15–20% total registrations with zero additional sessions. Highest-ROI lever in the program.
+  </div>
+  <div class="side-grid">
+    <div class="side-card"><p class="side-lang fr">FR webinars</p><div class="side-inner"><div class="side-item"><p>Attendance</p><p>41%</p></div><div class="side-item"><p>Watch time</p><p>82%</p></div></div></div>
+    <div class="side-card"><p class="side-lang en">EN webinars</p><div class="side-inner"><div class="side-item"><p>Attendance</p><p>34%</p></div><div class="side-item"><p>Watch time</p><p>77%</p></div></div></div>
+  </div>
+</div>
+
+<hr>
+
+<div class="section">
+  <p class="section-label">Enablement sessions — Q1 vs Q2 2026</p>
+  <div class="ins a">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Volume is down, but Q1 was inflated by 2 outlier sessions (103 + 45 reg on Feb 19). Removing those, Q1 averaged ~28 reg/session — close to Q2. No structural collapse.
+  </div>
+  <div class="metric-grid">
+    <div class="metric-card"><p class="metric-label">Avg registrations</p><p class="metric-val">25.8</p><span class="badge down">−32% vs Q1</span></div>
+    <div class="metric-card"><p class="metric-label">Avg attendees</p><p class="metric-val">12.5</p><span class="badge down">−43% vs Q1</span></div>
+    <div class="metric-card"><p class="metric-label">Attendance rate</p><p class="metric-val">48.9%</p><span class="badge down">−14% vs Q1</span></div>
+    <div class="metric-card"><p class="metric-label">Watch time</p><p class="metric-val">89.4%</p><span class="badge up">+1.7% vs Q1</span></div>
+    <div class="metric-card"><p class="metric-label">Interactions/att.</p><p class="metric-val">1.39</p><span class="badge up">+109% vs Q1</span></div>
+  </div>
+  <div class="ins g">
+    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Interaction rate more than doubled Q1→Q2 (+109%). Watch time at 89.4% — almost the full session. Peak: Marketing Automation EN on Jun 9, 2.55 interactions/attendee.
+  </div>
+  <div class="legend">
+    <span><span class="leg-sq" style="background:#B4B2A9"></span>Q1 2026</span>
+    <span><span class="leg-sq" style="background:#7F77DD"></span>Q2 2026</span>
+  </div>
+  <div class="chart-wrap"><canvas id="c2" role="img" aria-label="Sessions Q1 vs Q2: registrations, attendees, interaction rate">Q1: 38 reg, 21.9 att, 0.66 int/att. Q2: 25.8 reg, 12.5 att, 1.39 int/att.</canvas></div>
+  <div class="ins p" style="margin-top:1rem">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    FR attendance rate (60.1%) beats EN (44.9%) by 15 pts. Structural gap, not a one-quarter anomaly. Same content, different CSM activation levels.
+  </div>
+  <div class="side-grid">
+    <div class="side-card"><p class="side-lang fr">FR sessions</p><div class="side-inner"><div class="side-item"><p>Attendance</p><p>60.1%</p></div><div class="side-item"><p>Watch time</p><p>91.0%</p></div></div></div>
+    <div class="side-card"><p class="side-lang en">EN sessions</p><div class="side-inner"><div class="side-item"><p>Attendance</p><p>44.9%</p></div><div class="side-item"><p>Watch time</p><p>86.6%</p></div></div></div>
+  </div>
+</div>
+
+<p class="footer">Data as of June 2026 · Brevo Customer Enablement · Alessandro Pozza</p>
+
+<script>
+new Chart(document.getElementById('c1'), {
+  type: 'bar',
+  data: {
+    labels: ['Avg registrations / session', 'Avg attendees / session'],
+    datasets: [
+      { label: '2025', data: [93.9, 37.4], backgroundColor: '#B4B2A9', borderRadius: 4 },
+      { label: '2026', data: [122.0, 46.5], backgroundColor: '#1D9E75', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#888780' } },
+      y: { grid: { color: 'rgba(128,128,128,0.12)' }, ticks: { font: { size: 11 }, color: '#888780' } }
+    }
+  }
+});
+new Chart(document.getElementById('c2'), {
+  type: 'bar',
+  data: {
+    labels: ['Avg reg / session', 'Avg attendees', 'Interactions / att. ×10'],
+    datasets: [
+      { label: 'Q1 2026', data: [38.0, 21.9, 6.6], backgroundColor: '#B4B2A9', borderRadius: 4 },
+      { label: 'Q2 2026', data: [25.8, 12.5, 13.9], backgroundColor: '#7F77DD', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#888780' } },
+      y: { grid: { color: 'rgba(128,128,128,0.12)' }, ticks: { font: { size: 11 }, color: '#888780' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

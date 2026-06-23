@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enablement Impact Dashboard — June 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; color: #1a1a1a; padding: 2rem 1.5rem; max-width: 820px; margin: 0 auto; }
+h1 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: #888780; margin-bottom: 2rem; }
+.section { margin-bottom: 2.5rem; }
+.section-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: #888780; text-transform: uppercase; margin-bottom: 14px; }
+.ins { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 8px; margin-bottom: 1rem; font-size: 13px; line-height: 1.55; }
+.ins.g { background: #EAF3DE; color: #27500A; }
+.ins.a { background: #FAEEDA; color: #633806; }
+.ins.r { background: #FCEBEB; color: #791F1F; }
+.ins svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mult-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem; }
+.mult-card { background: #fff; border: 0.5px solid #e5e5e3; border-radius: 12px; padding: 14px 16px; }
+.mult-sub { font-size: 11px; color: #888780; margin-bottom: 6px; }
+.mult-num { font-size: 32px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
+.mult-detail { font-size: 11px; color: #888780; }
+.chart-wrap { position: relative; width: 100%; height: 200px; margin-bottom: 0.5rem; }
+.legend { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: #888780; }
+.legend span { display: flex; align-items: center; gap: 4px; }
+.leg-sq { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+.impact-card { background: #fff; border: 0.5px solid #e5e5e3; border-radius: 12px; padding: 14px 16px; }
+.impact-lang { font-size: 11px; font-weight: 600; margin-bottom: 10px; }
+.fr { color: #085041; } .en { color: #3C3489; }
+.impact-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 0.5px solid #f0f0ee; font-size: 12px; }
+.impact-row:last-child { border-bottom: none; }
+.impact-metric { color: #888780; }
+.impact-vals { display: flex; gap: 8px; align-items: center; }
+.impact-p { font-weight: 500; color: #1a1a1a; }
+.impact-c { color: #b4b2a9; font-size: 11px; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 5px; }
+.bg { background: #EAF3DE; color: #27500A; }
+.bn { background: #F1EFE8; color: #444441; }
+.ea-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem; }
+.ea-a { background: #EAF3DE; border: 0.5px solid #9FE1CB; border-radius: 12px; padding: 14px 16px; }
+.ea-b { background: #FAEEDA; border: 0.5px solid #FAC775; border-radius: 12px; padding: 14px 16px; }
+.ea-c { background: #f5f5f3; border: 0.5px solid #e5e5e3; border-radius: 12px; padding: 14px 16px; }
+.ea-grp { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+.ea-a .ea-grp { color: #085041; }
+.ea-b .ea-grp { color: #633806; }
+.ea-c .ea-grp { color: #888780; }
+.ea-big { font-size: 28px; font-weight: 500; line-height: 1; margin-bottom: 4px; color: #1a1a1a; }
+.ea-sub { font-size: 11px; color: #888780; }
+.ea-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 1rem; }
+.ea-table th { font-size: 11px; font-weight: 600; color: #888780; text-align: right; padding: 6px 8px; border-bottom: 0.5px solid #d3d1c7; }
+.ea-table th:first-child { text-align: left; }
+.ea-table td { padding: 7px 8px; border-bottom: 0.5px solid #f0f0ee; text-align: right; color: #1a1a1a; }
+.ea-table td:first-child { text-align: left; color: #888780; }
+.ea-table tr:last-child td { border-bottom: none; }
+hr { border: none; border-top: 0.5px solid #e5e5e3; margin: 2rem 0; }
+.footer { font-size: 11px; color: #b4b2a9; margin-top: 2.5rem; padding-top: 1rem; border-top: 0.5px solid #e5e5e3; }
+</style>
+</head>
+<body>
+
+<h1>Enablement Program — Impact Dashboard</h1>
+<p class="subtitle">June 2026 · Brevo Customer Enablement · <a href="https://app.notion.com/p/sendinblue/388449002dcb8052af59c32dfb0e74d0" style="color:#1D9E75">Full data page on Notion →</a></p>
+
+<div class="section">
+  <p class="section-label">Webinar feature adoption — watchers vs control</p>
+  <div class="ins g">
+    <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+    Same pattern across 3 webinars, 3 features, 3 timeframes: watching multiplies conversion 3–21× vs baseline. Registering without watching produces zero measurable signal.
+  </div>
+  <div class="mult-grid">
+    <div class="mult-card">
+      <p class="mult-sub">Push notifications — May 2026</p>
+      <p class="mult-num" style="color:#1D9E75">×21</p>
+      <p class="mult-detail">Feature activation: 5.4% (watched) vs 0.25% (control)</p>
+    </div>
+    <div class="mult-card">
+      <p class="mult-sub">Analytics Studio — Jan 2026</p>
+      <p class="mult-num" style="color:#7F77DD">×4.4</p>
+      <p class="mult-detail">Planhat opp rate: 4.41% (watched) vs 1.01% (control)</p>
+    </div>
+    <div class="mult-card">
+      <p class="mult-sub">Sales Platform — Oct 2025</p>
+      <p class="mult-num" style="color:#EF9F27">×3.5</p>
+      <p class="mult-detail">Planhat opp rate: 9.09% (watched) vs 2.57% (control)</p>
+    </div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="c3" role="img" aria-label="Conversion rates for watchers, no-shows, and control across Push, Analytics Studio, and Sales Platform webinars">Push AB 5.4%, D 0.25%. Analytics AB 4.41%, D 1.01%. Sales Platform AB 9.09%, D 2.57%.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="leg-sq" style="background:#1D9E75"></span>Watched (AB)</span>
+    <span><span class="leg-sq" style="background:#B4B2A9"></span>No-show (C)</span>
+    <span><span class="leg-sq" style="background:#D3D1C7"></span>Control (D)</span>
+  </div>
+  <div class="ins r" style="margin-top:1rem">
+    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+    H1 (feature activation) measurable only for Push — the only active Planhat Workflow bot. Analytics Studio and Sales Platform activation are invisible. Two triggers needed to fix this blind spot.
+  </div>
+</div>
+
+<hr>
+
+<div class="section">
+  <p class="section-label">Enablement sessions — impact on customer behavior (Mar–May 2026)</p>
+  <div class="ins g">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+    Consistent signal on both FR and EN: participants contact their CSM ~13 pts less, open tickets ~8–9 pts more, and go 33–47 days longer between touches. Acquired autonomy, not disengagement.
+  </div>
+  <div class="impact-grid">
+    <div class="impact-card">
+      <p class="impact-lang fr">FR cohort — n=50 vs n=209 control</p>
+      <div class="impact-row"><span class="impact-metric">CSM contact</span><div class="impact-vals"><span class="impact-p">60%</span><span class="impact-c">vs 72.7%</span><span class="badge bg">−12.7 pts</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Call + note (manual)</span><div class="impact-vals"><span class="impact-p">10%</span><span class="impact-c">vs 13.9%</span><span class="badge bg">−3.9 pts</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Ticket rate</span><div class="impact-vals"><span class="impact-p">36%</span><span class="impact-c">vs 27.3%</span><span class="badge bg">+8.7 pts</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Days since last touch</span><div class="impact-vals"><span class="impact-p">69d</span><span class="impact-c">vs 22d</span><span class="badge bg">+47d</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Avg MRR</span><div class="impact-vals"><span class="impact-p">€773</span><span class="impact-c">vs €689</span><span class="badge bg">+€84</span></div></div>
+    </div>
+    <div class="impact-card">
+      <p class="impact-lang en">EN cohort — n=57 vs n=207 control</p>
+      <div class="impact-row"><span class="impact-metric">CSM contact</span><div class="impact-vals"><span class="impact-p">56.1%</span><span class="impact-c">vs 70%</span><span class="badge bg">−13.9 pts</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Call + note (manual)</span><div class="impact-vals"><span class="impact-p">12.3%</span><span class="impact-c">vs 11.1%</span><span class="badge bn">+1.2 pts</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Ticket rate</span><div class="impact-vals"><span class="impact-p">29.8%</span><span class="impact-c">vs 21.3%</span><span class="badge bg">+8.5 pts</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Days since last touch</span><div class="impact-vals"><span class="impact-p">65d</span><span class="impact-c">vs 32d</span><span class="badge bg">+33d</span></div></div>
+      <div class="impact-row"><span class="impact-metric">Avg MRR</span><div class="impact-vals"><span class="impact-p">€834</span><span class="impact-c">vs €682</span><span class="badge bg">+€152</span></div></div>
+    </div>
+  </div>
+  <div class="ins a">
+    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Directional signals — not causal proof. Selection bias applies: struggling accounts are more likely directed to sessions, which works against participants on health comparisons. Signals hold despite this.
+  </div>
+</div>
+
+<hr>
+
+<div class="section">
+  <p class="section-label">Digital Kit / EverAfter — Pro New Offer cohort (n=227, Jan–May 2026)</p>
+  <div class="ins g">
+    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Zero churn among the 58 clients who completed at least one EverAfter stage. Less manual CSM work (−6 pts call+note). The kit scales onboarding without adding load.
+  </div>
+  <div class="ea-grid">
+    <div class="ea-a"><p class="ea-grp">A — used EverAfter</p><p class="ea-big">0.0%</p><p class="ea-sub">churn rate · n=58 · 25.6%</p></div>
+    <div class="ea-b"><p class="ea-grp">B — opened, 0 stages</p><p class="ea-big">6.5%</p><p class="ea-sub">ticket rate · n=92 · 40.5%</p></div>
+    <div class="ea-c"><p class="ea-grp">C — never opened</p><p class="ea-big">2.6%</p><p class="ea-sub">churn rate · n=77 · 33.9%</p></div>
+  </div>
+  <table class="ea-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th style="color:#085041">A — used</th>
+        <th style="color:#633806">B — opened</th>
+        <th>C — never</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Churn rate</td><td style="color:#27500A;font-weight:600">0.0% ✓</td><td>3.3%</td><td>2.6%</td></tr>
+      <tr><td>Call + note (manual)</td><td style="color:#27500A;font-weight:600">19.0%</td><td>25.0%</td><td>22.1%</td></tr>
+      <tr><td>Ticket rate</td><td>3.4%</td><td style="color:#791F1F;font-weight:600">6.5% !</td><td>1.3%</td></tr>
+      <tr><td>Avg MRR</td><td>€617</td><td>€626</td><td>€704</td></tr>
+    </tbody>
+  </table>
+  <div class="ins r">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Group B is the priority cohort: 40% of new Pro clients open the kit but complete nothing. Ticket rate nearly 2× Group A. They started, got stuck, escalated to support. The lever is stage 1 friction — not awareness.
+  </div>
+</div>
+
+<p class="footer">Data as of June 2026 · Brevo Customer Enablement · Alessandro Pozza</p>
+
+<script>
+new Chart(document.getElementById('c3'), {
+  type: 'bar',
+  data: {
+    labels: ['Push — activation %', 'Analytics — opp rate %', 'Sales Platform — opp rate %'],
+    datasets: [
+      { label: 'Watched (AB)', data: [5.4, 4.41, 9.09], backgroundColor: '#1D9E75', borderRadius: 4 },
+      { label: 'No-show (C)', data: [1.3, 0, 0], backgroundColor: '#B4B2A9', borderRadius: 4 },
+      { label: 'Control (D)', data: [0.25, 1.01, 2.57], backgroundColor: '#D3D1C7', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#888780' } },
+      y: { grid: { color: 'rgba(128,128,128,0.12)' }, ticks: { font: { size: 11 }, color: '#888780' }, title: { display: true, text: '%', font: { size: 11 }, color: '#888780' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
