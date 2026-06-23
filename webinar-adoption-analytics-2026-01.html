@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics Studio — Webinar Impact — Jan 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --forest: #0B4332;
+    --mint: #84cc99;
+    --mint-light: #d1fae5;
+    --cream: #fefce8;
+    --amber: #fde68a;
+    --amber-dark: #92400e;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-900: #111827;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-900); }
+
+  .hero { background: var(--forest); color: white; padding: 40px 32px 32px; }
+  .hero h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .hero .meta { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+  .hero .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .badge-ab { background: var(--mint); color: var(--forest); }
+  .badge-c  { background: var(--amber); color: var(--amber-dark); }
+  .badge-d  { background: rgba(255,255,255,0.2); color: white; }
+  .badge-na { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  section { background: white; border-radius: 12px; border: 1px solid var(--gray-200); padding: 24px; margin-bottom: 20px; }
+  h2 { font-size: 17px; font-weight: 700; color: var(--forest); margin-bottom: 16px; }
+
+  .banner { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .banner-na  { background: var(--gray-100); border: 1px solid var(--gray-200); }
+  .banner-h2  { background: var(--mint-light); border: 1px solid #6ee7b7; }
+  .banner-icon { font-size: 22px; flex-shrink: 0; }
+  .banner-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .banner-body  { font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .kpi { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 18px 16px; }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-bottom: 6px; }
+  .kpi-value { font-size: 28px; font-weight: 800; color: var(--forest); line-height: 1; }
+  .kpi-sub   { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+  .kpi-hi { border-color: var(--mint); background: var(--mint-light); }
+
+  .chart-wrap { max-width: 580px; margin: 0 auto; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--forest); color: white; padding: 9px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gray-50); }
+  .grp-ab { background: var(--mint); color: var(--forest); font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; }
+  .grp-c  { background: var(--amber); color: var(--amber-dark); font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; }
+  .grp-d  { background: var(--gray-200); color: var(--gray-700); font-weight: 700; padding: 2px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; }
+  .tag-wb { background: #dbeafe; color: #1d4ed8; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+  .tag-ti { background: #fef3c7; color: #92400e; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+
+  .rate-hi { color: #059669; font-weight: 700; }
+  .rate-lo { color: var(--gray-400); }
+
+  .findings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .finding { background: var(--gray-50); border-radius: 10px; border: 1px solid var(--gray-200); padding: 16px; }
+  .finding-num { font-size: 28px; font-weight: 800; color: var(--forest); margin-bottom: 6px; }
+  .finding-text { font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+
+  .caveat { background: var(--cream); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--amber-dark); margin-top: 12px; line-height: 1.6; }
+  .excl { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--gray-600); margin-top: 14px; }
+  .excl ul { margin-left: 16px; margin-top: 6px; }
+  .excl li { margin-bottom: 3px; }
+  p.meth { font-size: 13px; color: var(--gray-600); line-height: 1.7; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📊 Analytics Studio — Webinar Impact Analysis</h1>
+  <div class="meta">Webinar: 26 janvier 2026 &nbsp;·&nbsp; Window: 27/01 to 23/06/2026 &nbsp;·&nbsp; Run: 23 June 2026 &nbsp;·&nbsp; Label: analytics-2026-01</div>
+  <div class="badges">
+    <span class="badge badge-ab">AB · 136 companies (watched)</span>
+    <span class="badge badge-c">C · 327 companies (no-show)</span>
+    <span class="badge badge-d">D · 931 companies (control)</span>
+    <span class="badge badge-na">985 opps scanned · 5 pages</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <section>
+    <h2>🔬 H1 — Feature Activation</h2>
+    <div class="banner banner-na">
+      <div class="banner-icon">🚫</div>
+      <div>
+        <div class="banner-title">H1 not measurable for Analytics Studio</div>
+        <div class="banner-body">The Planhat Workflow bot in <strong>#csm-client-updates</strong> only fires for Push ("PRO client using new feature = PUSH"). No equivalent trigger exists for Analytics Studio / Insights. Multiple Slack searches returned 0 results. H1 is N/A for this webinar topic.</div>
+      </div>
+    </div>
+    <div class="caveat"><strong>Note:</strong> A proxy could use custom.Brevo Usage array, but it lacks timestamps and cannot distinguish pre vs post-webinar activation. Recommend requesting a dedicated Planhat Workflow trigger for Analytics feature adoption.</div>
+  </section>
+
+  <section>
+    <h2>💼 H2 — Opportunity Creation (Insights / Analytics keyword)</h2>
+    <div class="banner banner-h2">
+      <div class="banner-icon">✅</div>
+      <div>
+        <div class="banner-title">Complete dataset — 985 opportunities scanned across 5 pages (Jan 27 to Jun 23, 2026)</div>
+        <div class="banner-body">Filtered for "Insights" in custom.Product array, or "Analytics"/"Insights" in opportunity title. 18 relevant opps retained after excluding sub-accounts and test accounts.</div>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi kpi-hi">
+        <div class="kpi-label">AB Opp Rate</div>
+        <div class="kpi-value">3.7%</div>
+        <div class="kpi-sub">5 of 136 companies</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">C Opp Rate</div>
+        <div class="kpi-value">0.3%</div>
+        <div class="kpi-sub">1 of 327 companies</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">D Opp Rate (baseline)</div>
+        <div class="kpi-value">1.3%</div>
+        <div class="kpi-sub">12 of 931 companies</div>
+      </div>
+      <div class="kpi kpi-hi">
+        <div class="kpi-label">AB vs D Multiplier</div>
+        <div class="kpi-value">2.8×</div>
+        <div class="kpi-sub">AB / D baseline</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Total Relevant Opps</div>
+        <div class="kpi-value">18</div>
+        <div class="kpi-sub">after exclusions</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">CSM-attributed</div>
+        <div class="kpi-value">1 ⭐</div>
+        <div class="kpi-sub">Source = "Webinar"</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="h2chart" height="130"></canvas>
+    </div>
+  </section>
+
+  <section>
+    <h2>📋 Insights/Analytics Opportunities — Full List (18 opps)</h2>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Company</th><th>Title</th><th>Group</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2026-02-04</td><td>CNP Assurances IARD</td><td>XS - Analytics</td><td><span class="grp-ab">AB</span></td><td></td></tr>
+        <tr><td>2026-02-17</td><td>Chanel E-services</td><td>CDP Insight + Sales Platform</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-02-17</td><td>Ouest France - Corporate</td><td>Analytics</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-02-17</td><td>Welcome to the Jungle</td><td>Analytics</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-02-18</td><td>GROUPE RG</td><td>Cross-sell Insights</td><td><span class="grp-ab">AB</span></td><td></td></tr>
+        <tr><td>2026-02-18</td><td>Cdiscount B2B</td><td>Cross-sell Insights</td><td><span class="grp-ab">AB</span></td><td></td></tr>
+        <tr><td>2026-02-26</td><td>SIA NESS</td><td>Dashboards (ONLY)</td><td><span class="grp-c">C</span></td><td></td></tr>
+        <tr><td>2026-03-27</td><td>Audacia</td><td>Renew / Analytics</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-03-31</td><td>Financière Amuse Bidco (Asmodee)</td><td>Renewal 2026 [Insights in Product]</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-04-03</td><td>Beauty Coiffure</td><td>Insight <span class="tag-wb">Webinar ⭐</span></td><td><span class="grp-d">D</span></td><td>Webinar</td></tr>
+        <tr><td>2026-04-07</td><td>CroisiEurope</td><td>XS-Analytics</td><td><span class="grp-ab">AB</span></td><td></td></tr>
+        <tr><td>2026-04-15</td><td>Geodis</td><td>CDP Insight</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-05-05</td><td>MULTIPASS S.A.S</td><td>Insights</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-05-07</td><td>Rebel Penguin ApS</td><td>Brevo Analytics (dashboards)</td><td><span class="grp-d">D</span></td><td>Organic</td></tr>
+        <tr><td>2026-05-29</td><td>Octomedia</td><td>Renewal+ Analytics <span class="tag-ti">title only</span></td><td><span class="grp-d">D</span></td><td>CSM</td></tr>
+        <tr><td>2026-06-03</td><td>EDF RENOUVELABLES</td><td>Insights</td><td><span class="grp-d">D</span></td><td></td></tr>
+        <tr><td>2026-06-05</td><td>Londonwide LMC</td><td>Cross sell - Analytics</td><td><span class="grp-ab">AB</span></td><td>Organic</td></tr>
+        <tr><td>2026-06-05</td><td>Catalina Master</td><td>Analytics</td><td><span class="grp-d">D</span></td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="excl">
+      <strong>Excluded (5 opps):</strong>
+      <ul>
+        <li>LifeFlight Foundation ⚫Sub-account — "Crosssell- SF+Insights" (sub-account exclusion)</li>
+        <li>Juritravail ⚫Sub-account — "Insights" (sub-account exclusion)</li>
+        <li>JZapata — "Insights", "Insights2" (test account — verified)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>📊 Comparative Summary — All Groups</h2>
+    <table>
+      <thead>
+        <tr><th>Group</th><th>Description</th><th>n companies</th><th>H1 activation</th><th>H2 opp rate</th><th>n with opp</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="grp-ab">AB</span></td>
+          <td>Watched (live or replay)</td>
+          <td>136</td>
+          <td class="rate-lo">N/A</td>
+          <td class="rate-hi">3.7%</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td><span class="grp-c">C</span></td>
+          <td>Registered, no-show</td>
+          <td>327</td>
+          <td class="rate-lo">N/A</td>
+          <td class="rate-lo">0.3%</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td><span class="grp-d">D</span></td>
+          <td>Control (not registered)</td>
+          <td>931</td>
+          <td class="rate-lo">N/A</td>
+          <td>1.3%</td>
+          <td>12</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="caveat">
+      <strong>AB vs D:</strong> 3.7% vs 1.3% = <strong>2.8× multiplier</strong>. Group C (0.3%) is below D baseline — registered clients who didn't attend show less Analytics commercial activity than the broader customer base. This could reflect that registration is a weaker intent signal than actual attendance for Analytics specifically.
+    </div>
+  </section>
+
+  <section>
+    <h2>🔑 Key Findings</h2>
+    <div class="findings-grid">
+      <div class="finding">
+        <div class="finding-num">2.8×</div>
+        <div class="finding-text">Companies that watched the Analytics Studio webinar were <strong>2.8× more likely</strong> to have an Insights opportunity created in the 5 months following.</div>
+      </div>
+      <div class="finding">
+        <div class="finding-num">5 AB</div>
+        <div class="finding-text">CNP Assurances IARD, GROUPE RG, Cdiscount B2B, CroisiEurope, and Londonwide LMC all had Insights opps post-webinar — all are confirmed watchers.</div>
+      </div>
+      <div class="finding">
+        <div class="finding-num">⭐ D</div>
+        <div class="finding-text"><strong>Beauty Coiffure</strong> (Group D, never registered) has the only opp with source tagged "Webinar" — direct CSM attribution. Analytics reach goes beyond registered audience.</div>
+      </div>
+      <div class="finding">
+        <div class="finding-num">H1 N/A</div>
+        <div class="finding-text">No Planhat Workflow bot trigger exists for Analytics. H2 is the only measurable hypothesis. Recommend building a Workflow trigger for Insights feature activation.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔬 Methodology &amp; Caveats</h2>
+    <p class="meth"><strong>Webinar date:</strong> 26/01/2026 (analysis window opens 27/01/2026 per instruction, closes 23/06/2026).</p>
+    <p class="meth"><strong>Group assignment:</strong> GSheet Company IDs (Planhat internal _id). 490 registrant rows with a Company ID parsed; 136 unique AB companies, 327 unique C companies. ~48% GSheet coverage (many registrants use personal emails not matched to Planhat accounts). Group D = all Planhat customers (status=customer, excl. ⚫Sub-account) not in AB or C (n=931).</p>
+    <p class="meth"><strong>H2 keyword:</strong> Opportunity flagged as relevant if: (1) custom.Product array contains "Insights", or (2) title contains "analytics" or "insights" (case-insensitive). Octomedia's "Renewal+ Analytics" matches by title only (Product = Price increase) — flagged accordingly. Sub-accounts excluded by company name.</p>
+    <p class="meth"><strong>Pagination:</strong> 985 total opportunities retrieved across 5 Planhat queries (OFFSET 0, 200, 400, 600, 800). OFFSET 800 returned 185 records confirming dataset completeness through June 23, 2026.</p>
+    <div class="caveat">
+      <strong>Causal caveat:</strong> Attendees are self-selected — companies that watched the webinar likely already had higher Analytics interest. The 2.8× AB vs D delta is a correlation, not causation. The "Webinar" tag on Beauty Coiffure's opp suggests webinar content generates indirect commercial signals even outside the registered audience.
+    </div>
+  </section>
+
+</div>
+
+<script>
+new Chart(document.getElementById('h2chart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['AB (watched) — 136', 'C (no-show) — 327', 'D (control) — 931'],
+    datasets: [{
+      label: 'H2 Opp Rate (%)',
+      data: [3.7, 0.3, 1.3],
+      backgroundColor: ['#84cc99', '#fde68a', '#e5e7eb'],
+      borderColor: ['#0B4332', '#92400e', '#9ca3af'],
+      borderWidth: 2,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'H2 — Insights/Analytics Opp Rate by Group (%)', color: '#0B4332', font: { size: 14, weight: 'bold' } },
+      tooltip: { callbacks: { label: c => ` ${c.raw}%` } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v + '%' }, title: { display: true, text: 'Opp Rate (%)', color: '#4b5563' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
